@@ -1,0 +1,166 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4532040587748304692
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4532040587748304694}
+  - component: {fileID: 4532040587748304693}
+  m_Layer: 0
+  m_Name: Asteroid Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4532040587748304694
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4532040587748304692}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 4532040589005423081}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4532040587748304693
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4532040587748304692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4195b819277f264db2ca80c4add6026, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startCount: 1
+  asteroidObjectPool: {fileID: 4532040589005423080}
+--- !u!1 &4532040589005423087
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 7366941306396423697, guid: 9754fbddf7396f643a1608d6a1f9b55e,
+    type: 3}
+  m_PrefabInstance: {fileID: 6402334099527907326}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4532040589005423081}
+  - component: {fileID: 4532040589005423080}
+  m_Layer: 0
+  m_Name: Asteroid Pool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4532040589005423081
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 7366941306396423703, guid: 9754fbddf7396f643a1608d6a1f9b55e,
+    type: 3}
+  m_PrefabInstance: {fileID: 6402334099527907326}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4532040589005423087}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4532040587748304694}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4532040589005423080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 7366941306396423702, guid: 9754fbddf7396f643a1608d6a1f9b55e,
+    type: 3}
+  m_PrefabInstance: {fileID: 6402334099527907326}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4532040589005423087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bc4deb6dcd682f47b83ae0b704db0f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  poolObject: {fileID: 7678424289519073941, guid: 7d0669b9acc05194b86dabf4963e6146,
+    type: 3}
+  size: 20
+--- !u!1001 &6402334099527907326
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 4532040587748304694}
+    m_Modifications:
+    - target: {fileID: 7366941306396423697, guid: 9754fbddf7396f643a1608d6a1f9b55e,
+        type: 3}
+      propertyPath: m_Name
+      value: Asteroid Pool
+      objectReference: {fileID: 0}
+    - target: {fileID: 7366941306396423703, guid: 9754fbddf7396f643a1608d6a1f9b55e,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7366941306396423703, guid: 9754fbddf7396f643a1608d6a1f9b55e,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7366941306396423703, guid: 9754fbddf7396f643a1608d6a1f9b55e,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7366941306396423703, guid: 9754fbddf7396f643a1608d6a1f9b55e,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7366941306396423703, guid: 9754fbddf7396f643a1608d6a1f9b55e,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7366941306396423703, guid: 9754fbddf7396f643a1608d6a1f9b55e,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7366941306396423703, guid: 9754fbddf7396f643a1608d6a1f9b55e,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7366941306396423703, guid: 9754fbddf7396f643a1608d6a1f9b55e,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7366941306396423703, guid: 9754fbddf7396f643a1608d6a1f9b55e,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7366941306396423703, guid: 9754fbddf7396f643a1608d6a1f9b55e,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7366941306396423703, guid: 9754fbddf7396f643a1608d6a1f9b55e,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 9754fbddf7396f643a1608d6a1f9b55e, type: 3}
