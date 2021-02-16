@@ -11,39 +11,40 @@ using Game.Ships;
 
 namespace Game
 {
-    public class GameLogic : MonoBehaviour
-    {
-        enum GameState
-        {
-            Playing, WaitingForNextRound, GameOver, Idle
-        }
 
-        GameState gameState;
+    public enum GameState
+    {
+        Playing, WaitingForNextRound, GameOver, Idle
+    }
+
+    public partial class GameLogic : MonoBehaviour
+    {
+
+        public GameState CurrentGameState {
+            get; private set;
+        }
 
         //Asteroid Logic
         int asteroidCountAtStart;
         [SerializeField]
         AsteroidManager asteroidManager;
 
+        [SerializeField]
+        UfoManager ufoManager;
+
         void Start()
         {
             SetDefaultStartValues();
-            gameState = GameState.Idle;
-
-            largeUfo.SetActive(false);
-            smallUfo.SetActive(false);
-            currentlyUsedUfo = GetRandomUfo();
+            CurrentGameState = GameState.Idle;
 
             DisablePlayerShip();
 
-            largeUfo.GetComponent<Ufo>().OnShipDestroyed += OnUfoDestroyedOrDisabled;
-            smallUfo.GetComponent<Ufo>().OnShipDestroyed += OnUfoDestroyedOrDisabled;
-
             playerShip.OnShipDestroyed += OnPlayerLostLive;
             PlayerProjectile.OnProjectileDestroyed += UpdateScoreAndCheckForExtraLives;
-            UfoProjectile.OnProjectileDestroyed += OnUfoProjectileDestroyed;
             Asteroid.OnAsteroidDestroyed += OnAsteroidDestroyed;
             OnScoreChanged += CheckForExtraLivesBasedOnScore;
+
+            ufoManager.OnUfoDisabled += UfoDisabled;
         }
 
         void SetDefaultStartValues()
@@ -54,8 +55,9 @@ namespace Game
         }
 
 
-        float roundStartedAt;
+        float roundStartedAtTime;
         public event Action OnNewGameStarted;
+        public event Action<float> OnNewRoundStarted;
         public event Action OnCanPlayAgain;
 
         void StopTitleScreenCoroutineIfAnyExists()
@@ -81,10 +83,10 @@ namespace Game
             asteroidManager.EnableLargeAsteroids(asteroidCountAtStart);
 
             //other
-            gameState = GameState.Playing;
-            DisableCurrentlyUsedUfo();
+            CurrentGameState = GameState.Playing;
+            //DisableCurrentlyUsedUfo(); //realistically not needed since there shouldnt be any Active UFOs ??
             OnNewGameStarted?.Invoke();
-            roundStartedAt = Time.time;
+            roundStartedAtTime = Time.time;
         }
 
         void ResetScoreToGainExtraLife()
@@ -93,10 +95,7 @@ namespace Game
         }
 
 
-        void DisableCurrentlyUsedUfo()
-        {
-            currentlyUsedUfo.SetActive(false);
-        }
+
 
 
         void DisablePlayerShip()
@@ -113,10 +112,10 @@ namespace Game
         void ContinueGame()
         {
             EnablePlayerAtWorldCenter();
-            gameState = GameState.Playing;
+            CurrentGameState = GameState.Playing;
         }
 
-        void EnablePlayerAtWorldCenter()
+        void EnablePlayerAtWorldCenter() //PLAYER SPECIFIC
         {
             playerShip.transform.position = Vector3.zero;
             playerShip.transform.rotation = Quaternion.Euler(Vector3.zero);
@@ -127,62 +126,15 @@ namespace Game
 
         private void Update()
         {
-            if ((gameState == GameState.Idle || gameState == GameState.GameOver && canPlayAgain) && Input.GetKeyUp(KeyCode.Space))
+            if ((CurrentGameState == GameState.Idle || CurrentGameState == GameState.GameOver && canPlayAgain) && Input.GetKeyUp(KeyCode.Space))
             {
                 StartNewGame();
             }
 
-            if (ShouldSpawnUfo()) //checking every frame, which isn't nice. Perhaps a coroutine or some other way of calling it periodically, rather than every frame... 
-            {
-                EnableUfoBasedOnCurrentScore();
-            }
-
+     
         }
 
 
-        bool ShouldSpawnUfo()
-        {
-            return gameState == GameState.Playing &&
-                roundStartedAt + GameConfig.SpawnEnemyPeriod < Time.time &&
-                lastTimeUfoSpawned + GameConfig.SpawnEnemyPeriod < Time.time &&
-                !IsUfoCurrentlyActive();
-        }
-
-
-        float lastTimeUfoSpawned = 0;
-
-        [SerializeField]
-        GameObject largeUfo;
-
-        [SerializeField]
-        GameObject smallUfo;
-
-        GameObject currentlyUsedUfo;
-
-        void EnableUfoBasedOnCurrentScore()
-        {
-            if (score > GameConfig.ScoreForSmalUFOsOnly)
-            {
-                currentlyUsedUfo = smallUfo;
-
-            }
-            else
-            {
-                currentlyUsedUfo = GetRandomUfo();
-            }
-            lastTimeUfoSpawned = Time.time;
-            currentlyUsedUfo.gameObject.SetActive(true);
-        }
-
-        private GameObject GetRandomUfo()
-        {
-            bool returnSmallUfo = UnityEngine.Random.value > 0.5f;
-            if (returnSmallUfo)
-            {
-                return smallUfo;
-            }
-            return largeUfo;
-        }
 
 
         int playerLives;
@@ -220,7 +172,7 @@ namespace Game
         void HandleGameOver()
         {
             canPlayAgain = false;
-            gameState = GameState.GameOver;
+            CurrentGameState = GameState.GameOver;
             StartCoroutine(AllowToPlayAgainAfterSomeTime());
             showTitleScreenCoroutine = ShowTitleScreenAfterSomeTime();
             StartCoroutine(showTitleScreenCoroutine);
@@ -242,20 +194,9 @@ namespace Game
 
 
 
-        private void OnUfoProjectileDestroyed(object sender, OnProjectileDestroyedArgs args)
-        {
-            if (args.tagOfObjectHit.Equals(playerShip.gameObject.tag))
-            {
-                StartCoroutine(DisableEnemyShipAfterTimer());
-            }
-        }
 
-        IEnumerator DisableEnemyShipAfterTimer()
-        {
-            yield return new WaitForSeconds(1.5f);
-            DisableCurrentlyUsedUfo();
-            CheckIfToStartNewRound();
-        }
+
+   
 
         private void OnAsteroidDestroyed(object sender, OnAsteroidDestroyedArgs args)
         {
@@ -265,9 +206,16 @@ namespace Game
             }
         }
 
-        private void OnUfoDestroyedOrDisabled()
+        public void OnUfoDestroyedOrDisabled() //not great if PUBLIC, no ... ? 
         {
             CheckIfToStartNewRound();
+        }
+
+        void UfoDisabled()
+        {
+            //send out ACTION to inform other scripts.. ? 
+            CheckIfToStartNewRound(); //GameLogic.CS method.. 
+
         }
 
         void CheckIfToStartNewRound()
@@ -281,7 +229,7 @@ namespace Game
 
         IEnumerator StartMewRoundAfterDelay()
         {
-            gameState = GameState.WaitingForNextRound;
+            CurrentGameState = GameState.WaitingForNextRound;
             yield return new WaitForSeconds(GameConfig.TimeBeforeNewRoundStarts);
             StartNewRound();
         }
@@ -290,15 +238,20 @@ namespace Game
 
         void StartNewRound()
         {
+            //move to Asteroid manager or something...
             asteroidCountAtStart += GameConfig.asteroidCountToAddPerNewRound;
             asteroidManager.EnableLargeAsteroids(asteroidCountAtStart);
-            gameState = GameState.Playing;
-            roundStartedAt = Time.time;
+
+
+            //GameLogic stuff
+            CurrentGameState = GameState.Playing;
+            roundStartedAtTime = Time.time;
+            OnNewRoundStarted.Invoke(roundStartedAtTime);
         }
 
         private bool IsRoundOver()
         {
-            if (!asteroidManager.AnyAsteroidsActive() && !IsUfoCurrentlyActive())
+            if (!asteroidManager.AnyAsteroidsActive() && !ufoManager.IsUfoCurrentlyActive())
             {
                 return true;
             }
@@ -306,30 +259,30 @@ namespace Game
         }
 
 
-        bool IsUfoCurrentlyActive()
-        {
-            return currentlyUsedUfo.activeSelf;
-        }
+
 
 
         public int GetCurrentPlayerScore()
         {
-            return score;
+            return Score;
         }
 
-        private int score;
+        public int Score {
+            get; private set;
+        }
+
         private int currentScoreToGainExtraLife;
         public event Action<int> OnScoreChanged;
 
         private void SetScore(int value)
         {
-            score = value;
-            OnScoreChanged?.Invoke(score);
+            Score = value;
+            OnScoreChanged?.Invoke(Score);
         }
 
         void AddPointsToScore(int points)
         {
-            SetScore(score + points);
+            SetScore(Score + points);
         }
 
         IEnumerator ShowTitleScreenAfterSomeTime()
@@ -384,38 +337,12 @@ namespace Game
 
         private void OnDestroy()
         {
-            UnsubscribeActionListenersFrom(ref OnNewGameStarted);
-            UnsubscribeActionListenersFrom(ref OnGameOver);
-            UnsubscribeActionListenersFrom(ref OnCanPlayAgain);
-            UnsubscribeActionListenersFrom(ref OnShowTitleScreen);
-            UnsubscribeActionListenersFrom(ref OnPlayerLivesChanged);
-            UnsubscribeActionListenersFrom(ref OnScoreChanged);
-        }
-
-        void UnsubscribeActionListenersFrom(ref Action<int> action)
-        {
-            if (action != null)
-            {
-                Delegate[] subscribers = action.GetInvocationList();
-                foreach (Delegate subscriber in subscribers)
-                {
-                    action -= (subscriber as Action<int>);
-                }
-                action = null;
-            }
-        }
-
-        void UnsubscribeActionListenersFrom(ref Action action)
-        {
-            if (action != null)
-            {
-                Delegate[] subscribers = action.GetInvocationList();
-                foreach (Delegate subscriber in subscribers)
-                {
-                    action -= (subscriber as Action);
-                }
-                action = null;
-            }
+            ActionListenerUtility.UnsubscribeActionListenersFrom(ref OnNewGameStarted);
+            ActionListenerUtility.UnsubscribeActionListenersFrom(ref OnGameOver);
+            ActionListenerUtility.UnsubscribeActionListenersFrom(ref OnCanPlayAgain);
+            ActionListenerUtility.UnsubscribeActionListenersFrom(ref OnShowTitleScreen);
+            ActionListenerUtility.UnsubscribeActionListenersFrom(ref OnPlayerLivesChanged);
+            ActionListenerUtility.UnsubscribeActionListenersFrom(ref OnScoreChanged);
         }
 
     }

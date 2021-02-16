@@ -48,8 +48,6 @@ namespace Game.UI
 
         void OnNewGameStarted()
         {
-            //Alternative - placing every element on its own Canvas and enabling / disabling it
-            // but probably not needed given the simple UI Elements here.. 
             gameOverText.gameObject.SetActive(false);
             controlsText.gameObject.SetActive(false);
             pressSpaceToPlayAgainText.gameObject.SetActive(false);

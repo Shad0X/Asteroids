@@ -23,7 +23,6 @@ namespace Game.UI
 
         }
 
-        //given that this is pretty much a STAND ALONE UI Element, maybe just Accept EVENTS directly here, rather than RELAYING them through the UI Manager ??? 
         public void SetImageCount(int ammount)
         {
             int difference = ammount - GetActiveImageCount();

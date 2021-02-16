@@ -2,13 +2,7 @@
 
 namespace Game
 {
-    //Scriptable OBJ instead, so it can be changed in the Editor by anybody, not just in code ?
-    // .. could be a bit of OVER ENGINEERING THOUGH... 
     public struct GameConfig
-    //not sure if it's good to have something like this... 
-    // could make all fields Serializable so people can edit them in the EDITOR, but since they're CONST there's no instance of it
-    // meaning that a SCRIPTABLE OBJECT might be a better option ? 
-    // problem is that editing values wont affect the game until AFTER RESTART... so Tuning stuff DURING the game wont be an option.. 
     {
         //General
         public const float TimeBeforeNewRoundStarts = 3f;
