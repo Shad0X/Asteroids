@@ -6,16 +6,16 @@ namespace Game //Game.GameObjects .. or Game.Prefabs ??
     public class DisableObjectAfterTime : MonoBehaviour
     {
         [SerializeField]
-        float disableAfterSeconds;
+        float seconds = 1f;
 
         protected void OnEnable()
         {
-            StartCoroutine(DisableAfterTime());
+            StartCoroutine(DisableAfterTime(seconds));
         }
 
-        IEnumerator DisableAfterTime()
+        IEnumerator DisableAfterTime(float seconds)
         {
-            yield return new WaitForSeconds(disableAfterSeconds);
+            yield return new WaitForSeconds(seconds);
             gameObject.SetActive(false);
         }
     }
