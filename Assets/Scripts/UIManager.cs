@@ -24,12 +24,11 @@ namespace Game.UI
         [SerializeField]
         Text controlsText;
 
+        [SerializeField]
         PlayerLivesDisplayHandler livesDisplay;
 
         void Start()
         {
-            livesDisplay = gameObject.GetComponentInChildren<PlayerLivesDisplayHandler>();
-
             gameLogic.OnNewGameStarted += OnNewGameStarted;
             gameLogic.OnScoreChanged += OnScoreChanged;
             gameLogic.OnPlayerLivesChanged += OnPlayerLivesChanged;
@@ -50,22 +49,23 @@ namespace Game.UI
 
         void OnNewGameStarted()
         {
-            gameOverText.gameObject.SetActive(false); //use RENDERER instead.. as this sets the UI to DIRTY 
-            controlsText.gameObject.SetActive(false); //use RENDERER instead.. as this sets the UI to DIRTY 
-            pressSpaceToPlayAgainText.gameObject.SetActive(false); //use RENDERER instead.. as this sets the UI to DIRTY 
+            //Alternative - placing every element on its own Canvas and enabling / disabling it
+            // but probably not needed given the simple UI Elements here.. 
+            gameOverText.gameObject.SetActive(false);
+            controlsText.gameObject.SetActive(false);
+            pressSpaceToPlayAgainText.gameObject.SetActive(false);
         }
 
         void OnTitleScreenShown()
         {
             controlsText.gameObject.SetActive(true);
-
             gameOverText.gameObject.SetActive(false);
             pressSpaceToPlayAgainText.gameObject.SetActive(false);
         }
 
         void OnPlayerLivesChanged(int liveCount)
         {
-               livesDisplay.SetImageCount(liveCount);
+            livesDisplay.SetImageCount(liveCount);
         }
 
         void OnScoreChanged(int score)
