@@ -2,13 +2,13 @@
 
 namespace Game.ScreenSpace
 { 
-    public class ScreenSpaceUtility //needs better name
+    public class ScreenSpaceUtility
     {
-        private const float distanceFromScreenEdge = 10f; //not the best name... 
+        private const float distanceToScreenEdge = 10f;
         public static Vector3 GetRandomLocationInWorldSpace()
         {
-            float randomXlocation = Random.Range(distanceFromScreenEdge, Screen.width - distanceFromScreenEdge);
-            float randomYlocation = Random.Range(distanceFromScreenEdge, Screen.height - distanceFromScreenEdge);
+            float randomXlocation = Random.Range(distanceToScreenEdge, Screen.width - distanceToScreenEdge);
+            float randomYlocation = Random.Range(distanceToScreenEdge, Screen.height - distanceToScreenEdge);
 
             return ConvertScreenSpaceToWorldSpace(randomXlocation, randomYlocation);
         }

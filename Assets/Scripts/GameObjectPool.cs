@@ -5,16 +5,16 @@ namespace Game //since it applies to Asteroids and Bullets.. or should it be Gam
     public class GameObjectPool : MonoBehaviour
     {
         [SerializeField]
-        int size;
+        int startingSize;
 
         [SerializeField]
         GameObject objectToPool;
 
         void Start()
         {
-            for (int i = 0; i < size; i++)
+            for (int i = 0; i < startingSize; i++)
             {
-                AddNewObjectToPool();
+                AddNewObject();
             }
         }
 
@@ -27,10 +27,10 @@ namespace Game //since it applies to Asteroids and Bullets.. or should it be Gam
                     return obj.gameObject;
                 }
             }
-            return AddNewObjectToPool();
+            return AddNewObject();
         }
 
-        private GameObject AddNewObjectToPool()
+        private GameObject AddNewObject()
         {
             GameObject obj = Instantiate(objectToPool, gameObject.transform);
             obj.SetActive(false);

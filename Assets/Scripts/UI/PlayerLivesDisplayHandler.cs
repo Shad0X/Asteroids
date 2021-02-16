@@ -5,6 +5,8 @@ namespace Game.UI
 {
     public class PlayerLivesDisplayHandler : MonoBehaviour
     {
+        [SerializeField]
+        GameLogic gameLogic;
 
         [SerializeField]
         GameObject imageObject;
@@ -16,19 +18,23 @@ namespace Game.UI
         {
             horizontalDistanceBetweenImages = GetDistanceBetweenImages();
             rectTransformSize = transform.GetChild(0).GetComponent<RectTransform>().sizeDelta;
+
+            gameLogic.OnPlayerLivesChanged += SetImageCount;
+
         }
 
+        //given that this is pretty much a STAND ALONE UI Element, maybe just Accept EVENTS directly here, rather than RELAYING them through the UI Manager ??? 
         public void SetImageCount(int ammount)
         {
             int difference = ammount - GetActiveImageCount();
-            if (difference > 0) //gained live
+            if (difference > 0)
             {
                 for (int i = 0; i < difference; i++)
                 {
                     ShowOneMoreImage();
                 }
             }
-            else if (difference < 0) //lost live
+            else if (difference < 0)
             {
                 for (int i = 0; i < Math.Abs(difference); i++)
                 {
@@ -60,6 +66,7 @@ namespace Game.UI
 
         float GetDistanceBetweenImages()
         {
+            //assumes we have at least 2 Children... not ideal... 
             Transform first = transform.GetChild(0);
             Transform second = transform.GetChild(1);
             return second.position.x - first.position.x;

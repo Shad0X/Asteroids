@@ -6,6 +6,9 @@ using System.Collections;
 using UnityEngine;
 using Game.Ships;
 
+//Tooo large... 
+// split up into smaller chunks depending on what the Logic is for... 
+
 namespace Game
 {
     public class GameLogic : MonoBehaviour

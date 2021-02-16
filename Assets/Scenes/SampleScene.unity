@@ -1132,7 +1132,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bc4deb6dcd682f47b83ae0b704db0f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 10
+  startingSize: 0
   objectToPool: {fileID: 8504670923810705155, guid: fa4982d0e0799144fb53123d448bc48f,
     type: 3}
 --- !u!114 &1770873977 stripped
@@ -1399,7 +1399,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bc4deb6dcd682f47b83ae0b704db0f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 5
+  startingSize: 0
   objectToPool: {fileID: 8504670923810705155, guid: 0852df6d2e0f40c45b5b3a1434a0e1ae,
     type: 3}
 --- !u!1001 &159716832522808196
@@ -1768,6 +1768,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player Lives
       objectReference: {fileID: 0}
+    - target: {fileID: 7024825014489338026, guid: af22f2f759da3d54aa41bb9ede0505db,
+        type: 3}
+      propertyPath: gameLogic
+      value: 
+      objectReference: {fileID: 189652021}
     - target: {fileID: 8371529773464892598, guid: af22f2f759da3d54aa41bb9ede0505db,
         type: 3}
       propertyPath: m_RaycastTarget

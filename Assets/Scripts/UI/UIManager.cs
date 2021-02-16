@@ -31,7 +31,6 @@ namespace Game.UI
         {
             gameLogic.OnNewGameStarted += OnNewGameStarted;
             gameLogic.OnScoreChanged += OnScoreChanged;
-            gameLogic.OnPlayerLivesChanged += OnPlayerLivesChanged;
             gameLogic.OnGameOver += OnGameOver;
             gameLogic.OnCanPlayAgain += OnCanPlayAgain;
             gameLogic.OnShowTitleScreen += OnTitleScreenShown;
@@ -61,11 +60,6 @@ namespace Game.UI
             controlsText.gameObject.SetActive(true);
             gameOverText.gameObject.SetActive(false);
             pressSpaceToPlayAgainText.gameObject.SetActive(false);
-        }
-
-        void OnPlayerLivesChanged(int currentLifeCount)
-        {
-            livesDisplay.SetImageCount(currentLifeCount);
         }
 
         void OnScoreChanged(int score)
