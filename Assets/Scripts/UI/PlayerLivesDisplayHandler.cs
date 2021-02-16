@@ -9,23 +9,23 @@ namespace Game.UI
         [SerializeField]
         GameObject imageObject;
 
-        float xDistanceBetweenImages;
+        float horizontalDistanceBetweenImages;
 
         Vector2 rectTransformSize;
         private void Start()
         {
-            xDistanceBetweenImages = GetDistanceBetweenImages();
+            horizontalDistanceBetweenImages = GetDistanceBetweenImages();
             rectTransformSize = transform.GetChild(0).GetComponent<RectTransform>().sizeDelta;
         }
 
-        public void SetImageCount(int liveCount)
+        public void SetImageCount(int ammount)
         {
-            int difference = liveCount - GetActiveChildCount();
+            int difference = ammount - GetActiveImageCount();
             if (difference > 0) //gained live
             {
                 for (int i = 0; i < difference; i++)
                 {
-                    ShowOneMore();
+                    ShowOneMoreImage();
                 }
             }
             else if (difference < 0) //lost live
@@ -37,7 +37,7 @@ namespace Game.UI
             }
         }
 
-        void ShowOneMore()
+        void ShowOneMoreImage()
         {
             foreach (Transform child in transform)
             {
@@ -55,7 +55,7 @@ namespace Game.UI
             Transform lastImage = transform.GetChild(transform.childCount - 1);
             GameObject image = Instantiate(imageObject, transform);
             image.transform.GetComponent<RectTransform>().sizeDelta = rectTransformSize;
-            image.transform.position = lastImage.position + new Vector3(xDistanceBetweenImages, 0, 0);
+            image.transform.position = lastImage.position + new Vector3(horizontalDistanceBetweenImages, 0, 0);
         }
 
         float GetDistanceBetweenImages()
@@ -67,12 +67,12 @@ namespace Game.UI
 
         void DisableLastActiveImage()
         {
-            int activeChildCount = GetActiveChildCount();
+            int activeChildCount = GetActiveImageCount();
             int index = activeChildCount > 0 ? activeChildCount - 1 : 0;
             transform.GetChild(index).gameObject.SetActive(false);
         }
 
-        int GetActiveChildCount()
+        int GetActiveImageCount()
         {
             int count = 0;
             foreach (Transform child in transform)

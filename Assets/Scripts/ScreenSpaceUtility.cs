@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 
-namespace Game.ScreenSpace //maybe better NameSpace name... 
+namespace Game.ScreenSpace
 { 
     public class ScreenSpaceUtility //needs better name
     {
-        private const float distanceFromScreenEdge = 10f;
+        private const float distanceFromScreenEdge = 10f; //not the best name... 
         public static Vector3 GetRandomLocationInWorldSpace()
         {
             float randomXlocation = Random.Range(distanceFromScreenEdge, Screen.width - distanceFromScreenEdge);

@@ -63,9 +63,9 @@ namespace Game.UI
             pressSpaceToPlayAgainText.gameObject.SetActive(false);
         }
 
-        void OnPlayerLivesChanged(int liveCount)
+        void OnPlayerLivesChanged(int currentLifeCount)
         {
-            livesDisplay.SetImageCount(liveCount);
+            livesDisplay.SetImageCount(currentLifeCount);
         }
 
         void OnScoreChanged(int score)

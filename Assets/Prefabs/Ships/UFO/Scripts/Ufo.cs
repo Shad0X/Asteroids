@@ -27,12 +27,12 @@ namespace Game.Ships.Ufo
         void Start()
         {
             UpdateGameObjectSizeBasedOnSizeType(sizeType);
-            halfWidth = transform.localScale.x / 2;
+            halfWidth = transform.localScale.x / 2; //or should it use Bounds ?
             canon = gameObject.GetComponentInChildren<Canon>();
             rigidBody = gameObject.GetComponent<Rigidbody2D>();
         }
 
-        void SetRandomStartingLocation()
+        void SetRandomStartingLocation() //might wanna move it to ScreenSpaceUtility.cs ??? 
         {
             float randomVerticalLocation = Random.Range(halfWidth, Screen.height - halfWidth);
 
