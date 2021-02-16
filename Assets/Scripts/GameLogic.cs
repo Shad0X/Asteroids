@@ -30,17 +30,18 @@ namespace Game
         [SerializeField]
         UfoManager ufoManager;
 
+        [SerializeField]
+        PlayerManager playerManager;
+
         void Start()
         {
             SetDefaultStartValues();
             CurrentGameState = GameState.Idle;
 
-            DisablePlayerShip();
 
-            playerShip.OnShipDestroyed += OnPlayerLostLive;
             PlayerProjectile.OnProjectileDestroyed += UpdateScoreAndCheckForExtraLives;
             Asteroid.OnAsteroidDestroyed += OnAsteroidDestroyed;
-            OnScoreChanged += AddExtraLiveDependingOnScore;
+            playerManager.OnPlayerLivesChanged += OnPlayerLivesChanged;
 
             ufoManager.OnUfoDisabled += UfoDisabled;
         }
@@ -48,8 +49,6 @@ namespace Game
         void SetDefaultStartValues()
         {
             SetScore(0);
-            ResetPlayerLiveCount();
-
         }
 
         float roundStartedAtTime;
@@ -72,37 +71,10 @@ namespace Game
             //General
             SetDefaultStartValues();
 
-            //Player
-            EnablePlayerAtWorldCenter();
-            ResetScoreToGainExtraLife();
-
             //other
             CurrentGameState = GameState.Playing;
             OnNewGameStarted?.Invoke();
             roundStartedAtTime = Time.time;
-        }
-
-        void ResetScoreToGainExtraLife()
-        {
-            scoreToGainExtraLife = GameConfig.ScoreForGettingAnotherLife;
-        }
-
-        void DisablePlayerShip()
-        {
-            playerShip.gameObject.SetActive(false);
-        }
-
-        void ContinueGame()
-        {
-            EnablePlayerAtWorldCenter();
-            CurrentGameState = GameState.Playing;
-        }
-
-        void EnablePlayerAtWorldCenter() //PLAYER SPECIFIC
-        {
-            playerShip.transform.position = Vector3.zero;
-            playerShip.transform.rotation = Quaternion.Euler(Vector3.zero);
-            playerShip.gameObject.SetActive(true);
         }
 
         bool canPlayAgain = false;
@@ -115,32 +87,11 @@ namespace Game
             }
         }
 
-        int playerLivesCount;
-
-        [SerializeField]
-        PlayerShipController playerShip;
-
-        [SerializeField]
-        AudioClip playerGainedLive;
-
         public event Action OnGameOver;
-        public event Action<int> OnPlayerLivesChanged;
 
-        private void ResetPlayerLiveCount()
+        private void OnPlayerLivesChanged(int currentLifeCount) //mainly or ONLY stuff for PlayerManager... not rly relevent to GameLogic BESIDES Player LIFE count... 
         {
-            playerLivesCount = GameConfig.PlayerLiveCountAtStart;
-            OnPlayerLivesChanged?.Invoke(playerLivesCount);
-        }
-
-        private void OnPlayerLostLive()
-        {
-            playerLivesCount -= 1;
-            OnPlayerLivesChanged?.Invoke(playerLivesCount);
-            if (playerLivesCount > 0)
-            {
-                StartCoroutine(RespawnPlayerAfterTimer());
-            }
-            else
+            if (currentLifeCount <= 0)
             {
                 HandleGameOver();
             }
@@ -164,10 +115,9 @@ namespace Game
             canPlayAgain = true;
         }
 
-        IEnumerator RespawnPlayerAfterTimer()
+        void ContinueGame()
         {
-            yield return new WaitForSeconds(GameConfig.PlayerRespawnTimer);
-            ContinueGame();
+            CurrentGameState = GameState.Playing;
         }
 
         private void OnAsteroidDestroyed(object sender, OnAsteroidDestroyedArgs args)
@@ -177,8 +127,6 @@ namespace Game
                 CheckIfToStartNewRound();
             }
         }
-
-
 
         //same stuff in BOTH methods... why not just call CheckIfToStart..... directly, rather than a method to call it... ? 
         public void OnUfoDestroyedOrDisabled() //not great if PUBLIC, no ... ? 
@@ -193,10 +141,6 @@ namespace Game
 
         }
 
-
-
-
-
         private void CheckIfToStartNewRound()
         {
             if (IsRoundOver())
@@ -204,7 +148,6 @@ namespace Game
                 StartCoroutine(StartMewRoundAfterDelay());
             }
         }
-
 
         IEnumerator StartMewRoundAfterDelay()
         {
@@ -233,7 +176,6 @@ namespace Game
             get; private set;
         }
 
-        private int scoreToGainExtraLife;
         public event Action<int> OnScoreChanged;
 
         private void SetScore(int value)
@@ -274,29 +216,6 @@ namespace Game
             }
         }
 
-
-        void AddExtraLiveDependingOnScore(int currentScore)
-        {
-            if (currentScore - scoreToGainExtraLife > 0)
-            {
-                scoreToGainExtraLife += GameConfig.ScoreForGettingAnotherLife;
-                AddLive();
-            }
-        }
-
-        void AddLive()
-        {
-            playerLivesCount += 1;
-
-            if (playerLivesCount > 250) // https://en.wikipedia.org/wiki/Asteroids_(video_game)#:~:text=Asteroids%20contains%20several%20bugs.,than%20250%20lives%20are%20collected.
-            {
-                playerLivesCount = 0;
-            }
-
-            OnPlayerLivesChanged?.Invoke(playerLivesCount);
-            AudioSource.PlayClipAtPoint(playerGainedLive, gameObject.transform.position);
-        }
-
         public event Action OnShowTitleScreen;
 
         private void OnDestroy()
@@ -305,7 +224,6 @@ namespace Game
             ActionListenerUtility.UnsubscribeActionListenersFrom(ref OnGameOver);
             ActionListenerUtility.UnsubscribeActionListenersFrom(ref OnCanPlayAgain);
             ActionListenerUtility.UnsubscribeActionListenersFrom(ref OnShowTitleScreen);
-            ActionListenerUtility.UnsubscribeActionListenersFrom(ref OnPlayerLivesChanged);
             ActionListenerUtility.UnsubscribeActionListenersFrom(ref OnScoreChanged);
         }
 

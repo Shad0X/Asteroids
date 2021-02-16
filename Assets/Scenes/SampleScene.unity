@@ -267,8 +267,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   asteroidManager: {fileID: 1770873977}
   ufoManager: {fileID: 419510493}
-  playerShip: {fileID: 1918606222}
-  playerGainedLive: {fileID: 8300000, guid: 435d0a5d27039d24f9e7484fbf6ce6d8, type: 3}
+  playerManager: {fileID: 1953213948}
 --- !u!224 &209636506 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 159716832458237726, guid: db59b167d4cdb574fb554aebc5849cc8,
@@ -1402,6 +1401,52 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &1953213946
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1953213947}
+  - component: {fileID: 1953213948}
+  m_Layer: 0
+  m_Name: Player Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1953213947
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1953213946}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1953213948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1953213946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9faf3424909a8784d8d5e8c3e44ff28a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerShip: {fileID: 1918606222}
+  playerGainedLive: {fileID: 8300000, guid: 435d0a5d27039d24f9e7484fbf6ce6d8, type: 3}
+  gameLogic: {fileID: 189652021}
 --- !u!1 &2020044229
 GameObject:
   m_ObjectHideFlags: 0
@@ -1824,6 +1869,11 @@ PrefabInstance:
       propertyPath: gameLogic
       value: 
       objectReference: {fileID: 189652021}
+    - target: {fileID: 7024825014489338026, guid: af22f2f759da3d54aa41bb9ede0505db,
+        type: 3}
+      propertyPath: playerManager
+      value: 
+      objectReference: {fileID: 1953213948}
     - target: {fileID: 8371529773464892598, guid: af22f2f759da3d54aa41bb9ede0505db,
         type: 3}
       propertyPath: m_RaycastTarget
