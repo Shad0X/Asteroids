@@ -6,12 +6,41 @@ namespace Game
 {
     public class AsteroidManager : MonoBehaviour
     {
+        [SerializeField]
+        GameLogic gameLogic;
+
         private void Start()
         {
             Asteroid.OnAsteroidDestroyed += OnAsteroidDestroyed;
+            ResetAsteroidCount();
+
+            gameLogic.OnNewGameStarted += OnNewGameStarted;
+            gameLogic.OnNewRoundStarted += OnNewRoundStarted;
         }
 
-        public void EnableLargeAsteroids(int ammount)
+        //Asteroid Logic
+        int asteroidCountAtStart;
+
+        private void OnNewGameStarted()
+        {
+            ResetAsteroidCount();
+            EnableLargeAsteroids(asteroidCountAtStart);
+        }
+
+        private void OnNewRoundStarted(float timeStartedAt)
+        {
+            //move to Asteroid manager or something...
+            asteroidCountAtStart += GameConfig.asteroidCountToAddPerNewRound;
+            EnableLargeAsteroids(asteroidCountAtStart);
+
+        }
+
+        void ResetAsteroidCount()
+        {
+            asteroidCountAtStart = GameConfig.asteroidCountAtNewGame;
+        }
+
+        private void EnableLargeAsteroids(int ammount)
         {
             DisableAllAsteroids();
             for (int i = 0; i < ammount; i++)

@@ -24,8 +24,8 @@ namespace Game
             get; private set;
         }
 
-        //Asteroid Logic
-        int asteroidCountAtStart;
+
+
         [SerializeField]
         AsteroidManager asteroidManager;
 
@@ -42,7 +42,7 @@ namespace Game
             playerShip.OnShipDestroyed += OnPlayerLostLive;
             PlayerProjectile.OnProjectileDestroyed += UpdateScoreAndCheckForExtraLives;
             Asteroid.OnAsteroidDestroyed += OnAsteroidDestroyed;
-            OnScoreChanged += CheckForExtraLivesBasedOnScore;
+            OnScoreChanged += AddExtraLiveDependingOnScore;
 
             ufoManager.OnUfoDisabled += UfoDisabled;
         }
@@ -51,7 +51,7 @@ namespace Game
         {
             SetScore(0);
             ResetPlayerLiveCount();
-            ResetAsteroidCount();
+
         }
 
 
@@ -79,9 +79,6 @@ namespace Game
             EnablePlayerAtWorldCenter();
             ResetScoreToGainExtraLife();
 
-            //Asteroids
-            asteroidManager.EnableLargeAsteroids(asteroidCountAtStart);
-
             //other
             CurrentGameState = GameState.Playing;
             //DisableCurrentlyUsedUfo(); //realistically not needed since there shouldnt be any Active UFOs ??
@@ -91,7 +88,7 @@ namespace Game
 
         void ResetScoreToGainExtraLife()
         {
-            currentScoreToGainExtraLife = GameConfig.ScoreForGettingAnotherLife;
+            scoreToGainExtraLife = GameConfig.ScoreForGettingAnotherLife;
         }
 
 
@@ -103,10 +100,7 @@ namespace Game
             playerShip.gameObject.SetActive(false);
         }
 
-        void ResetAsteroidCount()
-        {
-            asteroidCountAtStart = GameConfig.asteroidCountAtNewGame;
-        }
+
 
 
         void ContinueGame()
@@ -238,9 +232,6 @@ namespace Game
 
         void StartNewRound()
         {
-            //move to Asteroid manager or something...
-            asteroidCountAtStart += GameConfig.asteroidCountToAddPerNewRound;
-            asteroidManager.EnableLargeAsteroids(asteroidCountAtStart);
 
 
             //GameLogic stuff
@@ -258,20 +249,11 @@ namespace Game
             return false;
         }
 
-
-
-
-
-        public int GetCurrentPlayerScore()
-        {
-            return Score;
-        }
-
         public int Score {
             get; private set;
         }
 
-        private int currentScoreToGainExtraLife;
+        private int scoreToGainExtraLife;
         public event Action<int> OnScoreChanged;
 
         private void SetScore(int value)
@@ -287,12 +269,14 @@ namespace Game
 
         IEnumerator ShowTitleScreenAfterSomeTime()
         {
+            //kinda a UI thing, but can't have logic inside the UI itself really.. it should just show n hide UI n update it.. 
             yield return new WaitForSeconds(20f);
             OnShowTitleScreen?.Invoke();
         }
 
         private void UpdateScoreAndCheckForExtraLives(object sender, OnProjectileDestroyedArgs args)
         {
+            //alternative would be to get an Object reference and get POINTs directly from it ??
             switch (args.tagOfObjectHit)
             {
                 case GameConfig.LargeAsteroidTag:
@@ -311,11 +295,11 @@ namespace Game
         }
 
 
-        void CheckForExtraLivesBasedOnScore(int newScore)
+        void AddExtraLiveDependingOnScore(int currentScore)
         {
-            if (newScore - currentScoreToGainExtraLife > 0)
+            if (currentScore - scoreToGainExtraLife > 0)
             {
-                currentScoreToGainExtraLife += GameConfig.ScoreForGettingAnotherLife;
+                scoreToGainExtraLife += GameConfig.ScoreForGettingAnotherLife;
                 AddLive();
             }
         }
