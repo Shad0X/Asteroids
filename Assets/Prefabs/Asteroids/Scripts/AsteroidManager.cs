@@ -18,7 +18,6 @@ namespace Game
             gameLogic.OnNewRoundStarted += OnNewRoundStarted;
         }
 
-        //Asteroid Logic
         int asteroidCountAtStart;
 
         private void OnNewGameStarted()
@@ -29,10 +28,8 @@ namespace Game
 
         private void OnNewRoundStarted(float timeStartedAt)
         {
-            //move to Asteroid manager or something...
             asteroidCountAtStart += GameConfig.asteroidCountToAddPerNewRound;
             EnableLargeAsteroids(asteroidCountAtStart);
-
         }
 
         void ResetAsteroidCount()
@@ -56,7 +53,6 @@ namespace Game
         {
             asteroidObjectPool.DisableAllObjects();
         }
-
 
         private void OnAsteroidDestroyed(object sender, OnAsteroidDestroyedArgs args)
         {

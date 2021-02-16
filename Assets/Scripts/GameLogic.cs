@@ -24,8 +24,6 @@ namespace Game
             get; private set;
         }
 
-
-
         [SerializeField]
         AsteroidManager asteroidManager;
 
@@ -54,7 +52,6 @@ namespace Game
 
         }
 
-
         float roundStartedAtTime;
         public event Action OnNewGameStarted;
         public event Action<float> OnNewRoundStarted;
@@ -81,7 +78,6 @@ namespace Game
 
             //other
             CurrentGameState = GameState.Playing;
-            //DisableCurrentlyUsedUfo(); //realistically not needed since there shouldnt be any Active UFOs ??
             OnNewGameStarted?.Invoke();
             roundStartedAtTime = Time.time;
         }
@@ -91,17 +87,10 @@ namespace Game
             scoreToGainExtraLife = GameConfig.ScoreForGettingAnotherLife;
         }
 
-
-
-
-
         void DisablePlayerShip()
         {
             playerShip.gameObject.SetActive(false);
         }
-
-
-
 
         void ContinueGame()
         {
@@ -124,14 +113,9 @@ namespace Game
             {
                 StartNewGame();
             }
-
-     
         }
 
-
-
-
-        int playerLives;
+        int playerLivesCount;
 
         [SerializeField]
         PlayerShipController playerShip;
@@ -144,15 +128,15 @@ namespace Game
 
         private void ResetPlayerLiveCount()
         {
-            playerLives = GameConfig.PlayerLiveCountAtStart;
-            OnPlayerLivesChanged?.Invoke(playerLives);
+            playerLivesCount = GameConfig.PlayerLiveCountAtStart;
+            OnPlayerLivesChanged?.Invoke(playerLivesCount);
         }
 
         private void OnPlayerLostLive()
         {
-            playerLives -= 1;
-            OnPlayerLivesChanged?.Invoke(playerLives);
-            if (playerLives > 0)
+            playerLivesCount -= 1;
+            OnPlayerLivesChanged?.Invoke(playerLivesCount);
+            if (playerLivesCount > 0)
             {
                 StartCoroutine(RespawnPlayerAfterTimer());
             }
@@ -186,12 +170,6 @@ namespace Game
             ContinueGame();
         }
 
-
-
-
-
-   
-
         private void OnAsteroidDestroyed(object sender, OnAsteroidDestroyedArgs args)
         {
             if (args.size == GameConfig.SmallAsteroidSize)
@@ -200,6 +178,9 @@ namespace Game
             }
         }
 
+
+
+        //same stuff in BOTH methods... why not just call CheckIfToStart..... directly, rather than a method to call it... ? 
         public void OnUfoDestroyedOrDisabled() //not great if PUBLIC, no ... ? 
         {
             CheckIfToStartNewRound();
@@ -212,7 +193,11 @@ namespace Game
 
         }
 
-        void CheckIfToStartNewRound()
+
+
+
+
+        private void CheckIfToStartNewRound()
         {
             if (IsRoundOver())
             {
@@ -228,13 +213,8 @@ namespace Game
             StartNewRound();
         }
 
-
-
         void StartNewRound()
         {
-
-
-            //GameLogic stuff
             CurrentGameState = GameState.Playing;
             roundStartedAtTime = Time.time;
             OnNewRoundStarted.Invoke(roundStartedAtTime);
@@ -306,14 +286,14 @@ namespace Game
 
         void AddLive()
         {
-            playerLives += 1;
+            playerLivesCount += 1;
 
-            if (playerLives > 250) // https://en.wikipedia.org/wiki/Asteroids_(video_game)#:~:text=Asteroids%20contains%20several%20bugs.,than%20250%20lives%20are%20collected.
+            if (playerLivesCount > 250) // https://en.wikipedia.org/wiki/Asteroids_(video_game)#:~:text=Asteroids%20contains%20several%20bugs.,than%20250%20lives%20are%20collected.
             {
-                playerLives = 0;
+                playerLivesCount = 0;
             }
 
-            OnPlayerLivesChanged?.Invoke(playerLives);
+            OnPlayerLivesChanged?.Invoke(playerLivesCount);
             AudioSource.PlayClipAtPoint(playerGainedLive, gameObject.transform.position);
         }
 
