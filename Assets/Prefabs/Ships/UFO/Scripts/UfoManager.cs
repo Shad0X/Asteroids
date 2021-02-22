@@ -28,6 +28,7 @@ namespace Game.Ships.Ufo
 
             currentlyUsedUfo = GetRandomUfo();
 
+            gameLogic.OnNewGameStarted += OnNewGameStarted;
             gameLogic.OnNewRoundStarted += OnNewRoundStarted;
             UfoProjectile.OnProjectileDestroyed += OnUfoProjectileDestroyed;
             largeUfo.GetComponent<Ufo>().OnShipDestroyed += gameLogic.OnUfoDestroyedOrDisabled; //NOT really great to Subscribe a METHOD in anotehr Class from outside of it, no ??? 
@@ -62,6 +63,11 @@ namespace Game.Ships.Ufo
 
         float roundStartedAtTime;
         private void OnNewRoundStarted(float startedAt)
+        {
+            roundStartedAtTime = startedAt;
+        }
+
+        private void OnNewGameStarted(float startedAt)
         {
             roundStartedAtTime = startedAt;
         }

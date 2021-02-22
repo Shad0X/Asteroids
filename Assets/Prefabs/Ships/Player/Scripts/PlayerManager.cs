@@ -86,7 +86,7 @@ namespace Game.Ships.Player
         [SerializeField]
         AudioClip playerGainedLive;
 
-        private void OnNewGame()
+        private void OnNewGame(float timeStartedAt)
         {
             ResetPlayerStats();
             EnablePlayerAtWorldCenter();

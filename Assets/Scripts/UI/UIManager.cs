@@ -49,7 +49,7 @@ namespace Game.UI
             pressSpaceToPlayAgainText.gameObject.SetActive(true);
         }
 
-        void OnNewGameStarted()
+        void OnNewGameStarted(float timeStartedAt)
         {
             gameOverText.gameObject.SetActive(false);
             controlsText.gameObject.SetActive(false);

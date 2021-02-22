@@ -45,7 +45,7 @@ namespace Game
         }
 
         float roundStartedAtTime;
-        public event Action OnNewGameStarted;
+        public event Action<float> OnNewGameStarted;
         public event Action<float> OnNewRoundStarted;
         public event Action OnCanPlayAgain;
 
@@ -73,7 +73,7 @@ namespace Game
 
             //other
             CurrentGameState = GameState.Playing;
-            OnNewGameStarted?.Invoke();
+            OnNewGameStarted?.Invoke(Time.time);
             roundStartedAtTime = Time.time;
         }
 
@@ -168,6 +168,7 @@ namespace Game
 
         private void OnDestroy()
         {
+            ActionListenerUtility.UnsubscribeActionListenersFrom(ref OnNewRoundStarted);
             ActionListenerUtility.UnsubscribeActionListenersFrom(ref OnNewGameStarted);
             ActionListenerUtility.UnsubscribeActionListenersFrom(ref OnGameOver);
             ActionListenerUtility.UnsubscribeActionListenersFrom(ref OnCanPlayAgain);

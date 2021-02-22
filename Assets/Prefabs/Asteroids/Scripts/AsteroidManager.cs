@@ -20,7 +20,7 @@ namespace Game.Asteroids
 
         int asteroidCountAtStart;
 
-        private void OnNewGameStarted()
+        private void OnNewGameStarted(float timeStartedAt)
         {
             ResetAsteroidCount();
             EnableLargeAsteroids(asteroidCountAtStart);

@@ -21,7 +21,7 @@ public class ScoreKeeper : MonoBehaviour
         get; private set;
     }
 
-    private void OnNewGameStarted()
+    private void OnNewGameStarted(float timeStartedAt)
     {
         SetScore(0);
     }
