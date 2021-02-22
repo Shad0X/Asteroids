@@ -13,7 +13,7 @@ namespace Game.Ships
         [SerializeField]
         float projectileSpeed = 10f;
 
-        public void FireWeapon()
+        public void Shoot()
         {
             GameObject projectile = projectilePool.GetObject();
             projectile.transform.position = gameObject.transform.position;

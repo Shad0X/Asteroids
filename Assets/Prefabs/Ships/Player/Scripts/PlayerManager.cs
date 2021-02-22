@@ -6,38 +6,32 @@ namespace Game.Ships.Player
 {
     public class PlayerManager : MonoBehaviour
     {
-        public event Action<int> OnPlayerLivesChanged;
-
-        int livesLeft; //PLAYER SPECIFIC
-
         [SerializeField]
-        PlayerShipController playerShip; //PLAYER SPECIFIC
-
-        [SerializeField]
-        AudioClip playerGainedLive; //PLAYER SPECIFIC
+        PlayerShipController playerShip;
 
         [SerializeField]
         GameLogic gameLogic;
 
-        private void ResetPlayerLiveCount() //PLAYER SPECIFIC
+        private void ResetPlayerLiveCount()
         {
             livesLeft = GameConfig.PlayerLiveCountAtStart;
             OnPlayerLivesChanged?.Invoke(livesLeft);
         }
 
+        private int livesLeft;
+        public event Action<int> OnPlayerLivesChanged;
+
         void Start()
         {
-            ResetPlayerLiveCount();
-            playerShip.OnShipDestroyed += OnPlayerLostLive;
             DisablePlayerShip();
+            ResetPlayerStats();
 
-            ResetScoreToGainExtraLife();
-
-            gameLogic.OnScoreChanged += AddExtraLiveDependingOnScore;
             gameLogic.OnNewGameStarted += OnNewGame;
+            playerShip.OnShipDestroyed += OnPlayerLostLive;
+            gameLogic.OnScoreChanged += AddExtraLiveDependingOnScore;
         }
 
-        void DisablePlayerShip() //PLAYER SPECIFIC
+        void DisablePlayerShip()
         {
             playerShip.gameObject.SetActive(false);
         }
@@ -86,11 +80,19 @@ namespace Game.Ships.Player
             AudioSource.PlayClipAtPoint(playerGainedLive, gameObject.transform.position);
         }
 
+        [SerializeField]
+        AudioClip playerGainedLive;
+
         private void OnNewGame()
         {
-            ResetScoreToGainExtraLife();
+            ResetPlayerStats();
             EnablePlayerAtWorldCenter();
+        }
+
+        private void ResetPlayerStats()
+        {
             ResetPlayerLiveCount();
+            ResetScoreToGainExtraLife();
         }
 
         void EnablePlayerAtWorldCenter()

@@ -28,15 +28,11 @@ namespace Game.Ships.Ufo
 
             currentlyUsedUfo = GetRandomUfo();
 
+            gameLogic.OnNewRoundStarted += OnNewRoundStarted;
+            UfoProjectile.OnProjectileDestroyed += OnUfoProjectileDestroyed;
             largeUfo.GetComponent<Ufo>().OnShipDestroyed += gameLogic.OnUfoDestroyedOrDisabled; //NOT really great to Subscribe a METHOD in anotehr Class from outside of it, no ??? 
             smallUfo.GetComponent<Ufo>().OnShipDestroyed += gameLogic.OnUfoDestroyedOrDisabled;
-            gameLogic.OnNewRoundStarted += OnNewRoundStarted;
-
-            UfoProjectile.OnProjectileDestroyed += OnUfoProjectileDestroyed;
-
         }
-
-
 
         private GameObject GetRandomUfo()
         {
@@ -47,7 +43,6 @@ namespace Game.Ships.Ufo
             }
             return largeUfo;
         }
-
 
         private void Update()
         {
@@ -78,7 +73,6 @@ namespace Game.Ships.Ufo
                 !IsUfoCurrentlyActive(); // LOCAL 2 UFO Manager
         }
 
-
         void EnableUfoBasedOnCurrentScore(int score)
         {
             if (score > GameConfig.ScoreForSmalUFOsOnly)
@@ -94,7 +88,7 @@ namespace Game.Ships.Ufo
             currentlyUsedUfo.gameObject.SetActive(true);
         }
 
-        IEnumerator DisableEnemyShipAfterTimer()
+        IEnumerator DisableEnemyShipAfterTimer() //isn't this the same as "DisableAfter... CS" class ??? 
         {
             yield return new WaitForSeconds(1.5f);
             DisableCurrentlyUsedUfo();

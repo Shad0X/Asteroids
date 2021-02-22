@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
 
-namespace Game //probably NOT the best place, but gotta place it somewhere.. 
+namespace Game //probably NOT the best place, but gotta place it somewhere..  ScreenSPACE maybe, since it's only used for updating stuff WITHIN ScreenSpace... ?
 {
     public class ObjectLocationChanger : MonoBehaviour
     {
-
         Camera mainCamera;
 
         int leftScreenEdgeLocation;

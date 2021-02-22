@@ -171,7 +171,7 @@ PrefabInstance:
     - target: {fileID: 3444065099417556289, guid: a6a702984f4c34a4193d601e249c86db,
         type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3444065099417556289, guid: a6a702984f4c34a4193d601e249c86db,
         type: 3}
@@ -331,7 +331,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &472493555
 GameObject:
@@ -769,7 +769,7 @@ Transform:
   - {fileID: 1496208258}
   - {fileID: 1422000077}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1089435839
 GameObject:
@@ -835,7 +835,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &1175310828 stripped
 RectTransform:
@@ -893,7 +893,7 @@ PrefabInstance:
     - target: {fileID: 3444065099417556289, guid: a6a702984f4c34a4193d601e249c86db,
         type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3444065099417556289, guid: a6a702984f4c34a4193d601e249c86db,
         type: 3}
@@ -1163,7 +1163,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1668287044
 MonoBehaviour:
@@ -1430,7 +1430,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1953213948
 MonoBehaviour:
@@ -1445,8 +1445,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerShip: {fileID: 1918606222}
-  playerGainedLive: {fileID: 8300000, guid: 435d0a5d27039d24f9e7484fbf6ce6d8, type: 3}
   gameLogic: {fileID: 189652021}
+  playerGainedLive: {fileID: 8300000, guid: 435d0a5d27039d24f9e7484fbf6ce6d8, type: 3}
 --- !u!1 &2020044229
 GameObject:
   m_ObjectHideFlags: 0
@@ -1476,7 +1476,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2020044231
 MonoBehaviour:
@@ -1702,7 +1702,7 @@ PrefabInstance:
     - target: {fileID: 4532040587748304694, guid: 76cc0e61771a6cf4da147796d30d33f9,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 4532040587748304694, guid: 76cc0e61771a6cf4da147796d30d33f9,
         type: 3}

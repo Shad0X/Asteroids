@@ -22,7 +22,7 @@ namespace Game.Ships.Player
 
             if (Input.GetKeyUp(KeyCode.Space))
             {
-                weapon.FireWeapon();
+                weapon.Shoot();
             }
 
             if (Input.GetKeyUp(KeyCode.R))

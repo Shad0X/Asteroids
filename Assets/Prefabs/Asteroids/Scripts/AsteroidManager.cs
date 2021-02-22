@@ -1,8 +1,8 @@
-﻿using Game.Asteroids;
-using Game.ScreenSpace;
+﻿using Game.ScreenSpace;
 using UnityEngine;
 
-namespace Game
+namespace Game.Asteroids
+
 {
     public class AsteroidManager : MonoBehaviour
     {
@@ -11,11 +11,11 @@ namespace Game
 
         private void Start()
         {
-            Asteroid.OnAsteroidDestroyed += OnAsteroidDestroyed;
             ResetAsteroidCount();
 
             gameLogic.OnNewGameStarted += OnNewGameStarted;
             gameLogic.OnNewRoundStarted += OnNewRoundStarted;
+            Asteroid.OnAsteroidDestroyed += OnAsteroidDestroyed;
         }
 
         int asteroidCountAtStart;
@@ -54,6 +54,8 @@ namespace Game
             asteroidObjectPool.DisableAllObjects();
         }
 
+        //Should this even be here? seems VERY Asteroid SPECIFIC and not MANAGER.... no ? 
+        // looks a lot like something that SHOULD be on an Asteroid itself ?
         private void OnAsteroidDestroyed(object sender, OnAsteroidDestroyedArgs args)
         {
             if (args.size == GameConfig.LargeAsteroidSize)

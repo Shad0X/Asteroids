@@ -24,6 +24,7 @@ namespace Game
             get; private set;
         }
 
+        //Sphagetti code ... 
         [SerializeField]
         AsteroidManager asteroidManager;
 
@@ -32,18 +33,19 @@ namespace Game
 
         [SerializeField]
         PlayerManager playerManager;
+        //Sphagetti code ...END... 
 
         void Start()
         {
             SetDefaultStartValues();
             CurrentGameState = GameState.Idle;
 
-
-            PlayerProjectile.OnProjectileDestroyed += UpdateScoreAndCheckForExtraLives;
             Asteroid.OnAsteroidDestroyed += OnAsteroidDestroyed;
-            playerManager.OnPlayerLivesChanged += OnPlayerLivesChanged;
+            PlayerProjectile.OnProjectileDestroyed += UpdateScoreAndCheckForExtraLives;
+            
+            ufoManager.OnUfoDisabled += OnUfoDisabled; //UFO disabled
 
-            ufoManager.OnUfoDisabled += UfoDisabled;
+            playerManager.OnPlayerLivesChanged += OnPlayerLivesChanged;
         }
 
         void SetDefaultStartValues()
@@ -64,6 +66,16 @@ namespace Game
             }
         }
 
+        bool canPlayAgain = false;
+
+        private void Update()
+        {
+            if ((CurrentGameState == GameState.Idle || CurrentGameState == GameState.GameOver && canPlayAgain) && Input.GetKeyUp(KeyCode.Space))
+            {
+                StartNewGame();
+            }
+        }
+
         void StartNewGame()
         {
             StopTitleScreenCoroutineIfAnyExists();
@@ -75,26 +87,6 @@ namespace Game
             CurrentGameState = GameState.Playing;
             OnNewGameStarted?.Invoke();
             roundStartedAtTime = Time.time;
-        }
-
-        bool canPlayAgain = false;
-
-        private void Update()
-        {
-            if ((CurrentGameState == GameState.Idle || CurrentGameState == GameState.GameOver && canPlayAgain) && Input.GetKeyUp(KeyCode.Space))
-            {
-                StartNewGame();
-            }
-        }
-
-        public event Action OnGameOver;
-
-        private void OnPlayerLivesChanged(int currentLifeCount) //mainly or ONLY stuff for PlayerManager... not rly relevent to GameLogic BESIDES Player LIFE count... 
-        {
-            if (currentLifeCount <= 0)
-            {
-                HandleGameOver();
-            }
         }
 
         IEnumerator showTitleScreenCoroutine;
@@ -115,11 +107,7 @@ namespace Game
             canPlayAgain = true;
         }
 
-        void ContinueGame()
-        {
-            CurrentGameState = GameState.Playing;
-        }
-
+        //KINDA Asteroid specific, BUT Affects Game LOGIC... 
         private void OnAsteroidDestroyed(object sender, OnAsteroidDestroyedArgs args)
         {
             if (args.size == GameConfig.SmallAsteroidSize)
@@ -129,23 +117,32 @@ namespace Game
         }
 
         //same stuff in BOTH methods... why not just call CheckIfToStart..... directly, rather than a method to call it... ? 
-        public void OnUfoDestroyedOrDisabled() //not great if PUBLIC, no ... ? 
+        public void OnUfoDestroyedOrDisabled() //not great if PUBLIC, no ... ?  SHOULDN'T allow OTHER Classes to use this as a SUBSCRIBER... 
         {
             CheckIfToStartNewRound();
         }
 
-        void UfoDisabled()
+        void OnUfoDisabled()
         {
             //send out ACTION to inform other scripts.. ? 
             CheckIfToStartNewRound(); //GameLogic.CS method.. 
-
         }
 
-        private void CheckIfToStartNewRound()
+        public event Action OnGameOver;
+
+        private void OnPlayerLivesChanged(int currentLifeCount) //mainly or ONLY stuff for PlayerManager... not rly relevent to GameLogic BESIDES Player LIFE count... 
+        {
+            if (currentLifeCount <= 0)
+            {
+                HandleGameOver();
+            }
+        }
+
+        private void CheckIfToStartNewRound() //DOES MORE than the name implies... NOT just CHECKING, but also TRIGGERING a NEW ROUND timer... 
         {
             if (IsRoundOver())
             {
-                StartCoroutine(StartMewRoundAfterDelay());
+                StartCoroutine(StartMewRoundAfterDelay()); 
             }
         }
 
@@ -176,9 +173,9 @@ namespace Game
             get; private set;
         }
 
-        public event Action<int> OnScoreChanged;
+        public event Action<int> OnScoreChanged; //does it need the "event" part ??? 
 
-        private void SetScore(int value)
+        private void SetScore(int value) //kinda pointless, since the Score VARIABLE already has a private set, no ?
         {
             Score = value;
             OnScoreChanged?.Invoke(Score);

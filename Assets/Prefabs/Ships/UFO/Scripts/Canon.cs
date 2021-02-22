@@ -19,9 +19,9 @@ namespace Game.Ships
             transform.rotation = Quaternion.Euler(0, 0, angle - 90);
         }
 
-        public void FireCanon()
+        public void Shoot()
         {
-            weapon.FireWeapon();
+            weapon.Shoot();
         }
     }
 }

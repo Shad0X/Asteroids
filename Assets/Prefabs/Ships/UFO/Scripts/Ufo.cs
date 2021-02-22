@@ -44,7 +44,6 @@ namespace Game.Ships.Ufo
             }
             else
             {
-
                 Vector3 rightScreenLodation = ScreenSpaceUtility.ConvertScreenSpaceToWorldSpace(Screen.width - halfWidth, randomVerticalLocation);
                 transform.position = rightScreenLodation;
             }
@@ -75,6 +74,7 @@ namespace Game.Ships.Ufo
 
         Vector3 movementDirection;
 
+        //not really UFO Specific, even if UFO's the only 1 using it.. more DIRECTION specific.. 
         static readonly Vector3 LEFT = new Vector3(1, 0, 0);
         static readonly Vector3 RIGHT = new Vector3(-1, 0, 0);
         static readonly Vector3 LEFTUP = new Vector3(1, 1, 0);
@@ -83,9 +83,9 @@ namespace Game.Ships.Ufo
         static readonly Vector3 RIGHTDOWN = new Vector3(-1, -1, 0);
 
         private readonly List<Vector3> availableDirections = new List<Vector3>()
-    {
-        LEFT, RIGHT, LEFTUP, LEFTDOWN, RIGHTUP, RIGHTDOWN
-    };
+        {
+            LEFT, RIGHT, LEFTUP, LEFTDOWN, RIGHTUP, RIGHTDOWN
+        };
 
         void SetMovementDirectionTowardsWorldCenter()
         {
@@ -136,10 +136,12 @@ namespace Game.Ships.Ufo
 
         private void OnDisable()
         {
-            StopAllCoroutines();
+            StopAllCoroutines(); //might be stopping ALL coroutines, including those TRIGGERED by other SCRIPTs ?? 
+            //VEY MUCH a PROBLEM causer... most likely... 
+            //just keep a reference to every CoRoutine like in other Class'es and stop 'em manually via REFerence... 
         }
 
-        void FireCanonBasedOnUfoSizeType()
+        void FireCanonBasedOnUfoSizeType() //might want to just create 2 separate classes for LARGE n SMALL ships ?? 
         {
             if (sizeType == UfoSizeType.Large)
             {
@@ -161,14 +163,14 @@ namespace Game.Ships.Ufo
 
         void FireCanonInRandomDirection()
         {
-            Vector3 randomDirection = new Vector3(UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(-1f, 1f), 0);
+            Vector3 randomDirection = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), 0);
             canon.AimAt(randomDirection);
             FireCanon();
         }
 
         void FireCanon()
         {
-            canon.FireCanon();
+            canon.Shoot();
         }
 
     }
