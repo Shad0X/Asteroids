@@ -12,6 +12,9 @@ namespace Game.Ships.Player
         [SerializeField]
         GameLogic gameLogic;
 
+        [SerializeField]
+        ScoreKeeper scoreKeeper;
+
         private void ResetPlayerLiveCount()
         {
             livesLeft = GameConfig.PlayerLiveCountAtStart;
@@ -28,7 +31,7 @@ namespace Game.Ships.Player
 
             gameLogic.OnNewGameStarted += OnNewGame;
             playerShip.OnShipDestroyed += OnPlayerLostLive;
-            gameLogic.OnScoreChanged += AddExtraLiveDependingOnScore;
+            scoreKeeper.OnScoreChanged += AddExtraLiveDependingOnScore;
         }
 
         void DisablePlayerShip()

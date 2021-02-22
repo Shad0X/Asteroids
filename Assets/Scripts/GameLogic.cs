@@ -4,14 +4,12 @@ using Game.Asteroids;
 using System;
 using System.Collections;
 using UnityEngine;
-using Game.Ships;
 
 //Tooo large... 
 // split up into smaller chunks depending on what the Logic is for... 
 
 namespace Game
 {
-
     public enum GameState
     {
         Playing, WaitingForNextRound, GameOver, Idle
@@ -37,20 +35,13 @@ namespace Game
 
         void Start()
         {
-            SetDefaultStartValues();
             CurrentGameState = GameState.Idle;
 
             Asteroid.OnAsteroidDestroyed += OnAsteroidDestroyed;
-            PlayerProjectile.OnProjectileDestroyed += UpdateScoreAndCheckForExtraLives;
             
             ufoManager.OnUfoDisabled += OnUfoDisabled; //UFO disabled
 
             playerManager.OnPlayerLivesChanged += OnPlayerLivesChanged;
-        }
-
-        void SetDefaultStartValues()
-        {
-            SetScore(0);
         }
 
         float roundStartedAtTime;
@@ -79,9 +70,6 @@ namespace Game
         void StartNewGame()
         {
             StopTitleScreenCoroutineIfAnyExists();
-
-            //General
-            SetDefaultStartValues();
 
             //other
             CurrentGameState = GameState.Playing;
@@ -169,48 +157,11 @@ namespace Game
             return false;
         }
 
-        public int Score {
-            get; private set;
-        }
-
-        public event Action<int> OnScoreChanged; //does it need the "event" part ??? 
-
-        private void SetScore(int value) //kinda pointless, since the Score VARIABLE already has a private set, no ?
-        {
-            Score = value;
-            OnScoreChanged?.Invoke(Score);
-        }
-
-        void AddPointsToScore(int points)
-        {
-            SetScore(Score + points);
-        }
-
         IEnumerator ShowTitleScreenAfterSomeTime()
         {
             //kinda a UI thing, but can't have logic inside the UI itself really.. it should just show n hide UI n update it.. 
             yield return new WaitForSeconds(20f);
             OnShowTitleScreen?.Invoke();
-        }
-
-        private void UpdateScoreAndCheckForExtraLives(object sender, OnProjectileDestroyedArgs args)
-        {
-            //alternative would be to get an Object reference and get POINTs directly from it ??
-            switch (args.tagOfObjectHit)
-            {
-                case GameConfig.LargeAsteroidTag:
-                    AddPointsToScore(GameConfig.LargeAsteroidPointsValue);
-                    break;
-                case GameConfig.MediumAsteroidTag:
-                    AddPointsToScore(GameConfig.MediumAsteroidPointsValue);
-                    break;
-                case GameConfig.SmallAsteroidTag:
-                    AddPointsToScore(GameConfig.SmallAsteroidPointsValue);
-                    break;
-                case GameConfig.UfoTag:
-                    AddPointsToScore(GameConfig.UfoPointsValue);
-                    break;
-            }
         }
 
         public event Action OnShowTitleScreen;
@@ -221,7 +172,6 @@ namespace Game
             ActionListenerUtility.UnsubscribeActionListenersFrom(ref OnGameOver);
             ActionListenerUtility.UnsubscribeActionListenersFrom(ref OnCanPlayAgain);
             ActionListenerUtility.UnsubscribeActionListenersFrom(ref OnShowTitleScreen);
-            ActionListenerUtility.UnsubscribeActionListenersFrom(ref OnScoreChanged);
         }
 
     }

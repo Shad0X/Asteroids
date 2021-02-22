@@ -27,10 +27,13 @@ namespace Game.UI
         [SerializeField]
         PlayerLivesDisplayHandler livesDisplay;
 
+        [SerializeField]
+        ScoreKeeper scoreKeeper;
+
         void Start()
         {
             gameLogic.OnNewGameStarted += OnNewGameStarted;
-            gameLogic.OnScoreChanged += OnScoreChanged;
+            scoreKeeper.OnScoreChanged += OnScoreChanged;
             gameLogic.OnGameOver += OnGameOver;
             gameLogic.OnCanPlayAgain += OnCanPlayAgain;
             gameLogic.OnShowTitleScreen += OnTitleScreenShown;

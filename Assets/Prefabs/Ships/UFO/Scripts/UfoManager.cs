@@ -44,11 +44,14 @@ namespace Game.Ships.Ufo
             return largeUfo;
         }
 
+        [SerializeField]
+        ScoreKeeper scoreKeeper;
+
         private void Update()
         {
             if (ShouldSpawnUfo()) //checking every frame, which isn't nice. Perhaps a coroutine or some other way of calling it periodically, rather than every frame... 
             {
-                EnableUfoBasedOnCurrentScore(gameLogic.Score); //problem - if GameLogic is changed, this will break... not STAND ALONE enougugh.. 
+                EnableUfoBasedOnCurrentScore(scoreKeeper.Score); //problem - if GameLogic is changed, this will break... not STAND ALONE enougugh.. 
             }
 
         }
