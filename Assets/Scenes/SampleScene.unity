@@ -935,6 +935,50 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1223617570}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1394630090
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1394630092}
+  - component: {fileID: 1394630091}
+  m_Layer: 0
+  m_Name: Asteroid Factory
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1394630091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1394630090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ca5d036adcf1d646a9cc8d3b34b92a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  asteroidObjectPool: {fileID: 1817080149}
+--- !u!4 &1394630092
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1394630090}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 13
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1420008135
 GameObject:
   m_ObjectHideFlags: 0
@@ -1236,6 +1280,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b4195b819277f264db2ca80c4add6026, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1817080149 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4532040589005423080, guid: 76cc0e61771a6cf4da147796d30d33f9,
+    type: 3}
+  m_PrefabInstance: {fileID: 4532040589250560844}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bc4deb6dcd682f47b83ae0b704db0f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &1918606221
@@ -1711,6 +1767,11 @@ PrefabInstance:
       propertyPath: gameLogic
       value: 
       objectReference: {fileID: 189652021}
+    - target: {fileID: 4532040587748304693, guid: 76cc0e61771a6cf4da147796d30d33f9,
+        type: 3}
+      propertyPath: asteroidFactory
+      value: 
+      objectReference: {fileID: 1394630091}
     - target: {fileID: 4532040587748304694, guid: 76cc0e61771a6cf4da147796d30d33f9,
         type: 3}
       propertyPath: m_LocalPosition.x
