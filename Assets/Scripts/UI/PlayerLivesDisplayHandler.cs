@@ -1,13 +1,12 @@
 ﻿using System;
 using UnityEngine;
-using Game.Ships.Player;
 
 namespace Game.UI
 {
     public class PlayerLivesDisplayHandler : MonoBehaviour
     {
         [SerializeField]
-        PlayerManager playerManager;
+        PlayerLives playerLives;
 
         [SerializeField]
         GameObject imageObject;
@@ -20,7 +19,7 @@ namespace Game.UI
             horizontalDistanceBetweenImages = GetDistanceBetweenImages();
             rectTransformSize = transform.GetChild(0).GetComponent<RectTransform>().sizeDelta;
 
-            playerManager.OnPlayerLivesChanged += SetImageCount;
+            playerLives.OnPlayerLivesChanged += SetImageCount;
         }
 
         public void SetImageCount(int ammount)

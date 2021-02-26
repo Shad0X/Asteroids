@@ -1,5 +1,4 @@
-﻿using Game.Ships.Player;
-using Game.Ships.Ufo;
+﻿using Game.Ships.Ufo;
 using Game.Asteroids;
 using System;
 using System.Collections;
@@ -30,7 +29,7 @@ namespace Game
         UfoManager ufoManager;
 
         [SerializeField]
-        PlayerManager playerManager;
+        PlayerLives playerLives;
         //Sphagetti code ...END... 
 
         void Start()
@@ -39,9 +38,9 @@ namespace Game
 
             Asteroid.OnAsteroidDestroyed += OnAsteroidDestroyed;
             
-            ufoManager.OnUfoDisabled += OnUfoDisabled; //UFO disabled
+            ufoManager.OnShipDisabled += OnUfoDisabled; //UFO disabled
 
-            playerManager.OnPlayerLivesChanged += OnPlayerLivesChanged;
+            playerLives.OnPlayerLivesChanged += OnPlayerLivesChanged;
         }
 
         float roundStartedAtTime;
@@ -150,7 +149,7 @@ namespace Game
 
         private bool IsRoundOver()
         {
-            if (!asteroidManager.AnyAsteroidsActive() && !ufoManager.IsUfoCurrentlyActive())
+            if (!asteroidManager.AnyAsteroidsActive() && !ufoManager.IsAnyUfoActive())
             {
                 return true;
             }

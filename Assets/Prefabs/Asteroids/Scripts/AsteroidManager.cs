@@ -2,7 +2,6 @@
 using UnityEngine;
 
 namespace Game.Asteroids
-
 {
     public class AsteroidManager : MonoBehaviour
     {

@@ -267,7 +267,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   asteroidManager: {fileID: 1770873977}
   ufoManager: {fileID: 419510493}
-  playerManager: {fileID: 1953213948}
+  playerLives: {fileID: 1719518724}
 --- !u!224 &209636506 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 159716832458237726, guid: db59b167d4cdb574fb554aebc5849cc8,
@@ -1270,6 +1270,53 @@ MonoBehaviour:
   startingSize: 0
   objectToPool: {fileID: 8504670923810705155, guid: fa4982d0e0799144fb53123d448bc48f,
     type: 3}
+--- !u!1 &1719518723
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1719518725}
+  - component: {fileID: 1719518724}
+  m_Layer: 0
+  m_Name: Player Lives
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1719518724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1719518723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27e4fe70a6900924c8c0d24b5eeb0489, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameLogic: {fileID: 189652021}
+  playerShip: {fileID: 1918606222}
+  scoreKeeper: {fileID: 1420008136}
+  playerGainedLive: {fileID: 8300000, guid: 435d0a5d27039d24f9e7484fbf6ce6d8, type: 3}
+--- !u!4 &1719518725
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1719518723}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 14
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1770873977 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4532040587748304693, guid: 76cc0e61771a6cf4da147796d30d33f9,
@@ -1514,7 +1561,7 @@ GameObject:
   - component: {fileID: 1953213947}
   - component: {fileID: 1953213948}
   m_Layer: 0
-  m_Name: Player Manager
+  m_Name: Player Spawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1546,10 +1593,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9faf3424909a8784d8d5e8c3e44ff28a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerShip: {fileID: 1918606222}
   gameLogic: {fileID: 189652021}
-  scoreKeeper: {fileID: 1420008136}
-  playerGainedLive: {fileID: 8300000, guid: 435d0a5d27039d24f9e7484fbf6ce6d8, type: 3}
+  playerShip: {fileID: 1918606222}
+  playerLives: {fileID: 1719518724}
 --- !u!1 &2020044229
 GameObject:
   m_ObjectHideFlags: 0
@@ -1982,6 +2028,11 @@ PrefabInstance:
       propertyPath: playerManager
       value: 
       objectReference: {fileID: 1953213948}
+    - target: {fileID: 7024825014489338026, guid: af22f2f759da3d54aa41bb9ede0505db,
+        type: 3}
+      propertyPath: playerLives
+      value: 
+      objectReference: {fileID: 1719518724}
     - target: {fileID: 8371529773464892598, guid: af22f2f759da3d54aa41bb9ede0505db,
         type: 3}
       propertyPath: m_RaycastTarget

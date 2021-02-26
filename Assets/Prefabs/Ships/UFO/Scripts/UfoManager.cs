@@ -32,7 +32,9 @@ namespace Game.Ships.Ufo
             gameLogic.OnNewRoundStarted += OnNewRoundStarted;
             UfoProjectile.OnProjectileDestroyed += OnUfoProjectileDestroyed;
             largeUfo.GetComponent<Ufo>().OnShipDestroyed += gameLogic.OnUfoDestroyedOrDisabled; //NOT really great to Subscribe a METHOD in anotehr Class from outside of it, no ??? 
-            smallUfo.GetComponent<Ufo>().OnShipDestroyed += gameLogic.OnUfoDestroyedOrDisabled;
+            smallUfo.GetComponent<Ufo>().OnShipDestroyed += gameLogic.OnUfoDestroyedOrDisabled; // GameLogic SHOULD BE responsible for handling WHAT it Subscribes to.. NOT let other Classes do it without GameLogic agreeing to it... 
+            //make Method in GameLogic PRIVATE + [SerializedFields] for Ufos in it so it can Subscribe to their DEATH States ? 
+            // still not ideal... 
         }
 
         private GameObject GetRandomUfo()
@@ -52,7 +54,7 @@ namespace Game.Ships.Ufo
         {
             if (ShouldSpawnUfo()) //checking every frame, which isn't nice. Perhaps a coroutine or some other way of calling it periodically, rather than every frame... 
             {
-                EnableUfoBasedOnCurrentScore(scoreKeeper.Score); //problem - if GameLogic is changed, this will break... not STAND ALONE enougugh.. 
+                EnableUfoBasedOnScore(scoreKeeper.Score); //problem - if GameLogic is changed, this will break... not STAND ALONE enougugh.. 
             }
 
         }
@@ -72,22 +74,21 @@ namespace Game.Ships.Ufo
             roundStartedAtTime = startedAt;
         }
 
-        bool ShouldSpawnUfo()
+        bool ShouldSpawnUfo() // or SHOULD the GameState keep track of this and just TRIGGER The Spawning ?? via Action Event or something.. ?? 
         {
             return gameLogic.CurrentGameState == GameState.Playing && //public from GameLogic
 
                 roundStartedAtTime + GameConfig.SpawnEnemyPeriod < Time.time && // GameLogic ONLY... 
 
                 lastTimeUfoSpawned + GameConfig.SpawnEnemyPeriod < Time.time && //LOCAL to UFO Manager
-                !IsUfoCurrentlyActive(); // LOCAL 2 UFO Manager
+                !IsAnyUfoActive(); // LOCAL 2 UFO Manager
         }
 
-        void EnableUfoBasedOnCurrentScore(int score)
+        void EnableUfoBasedOnScore(int currentScore)
         {
-            if (score > GameConfig.ScoreForSmalUFOsOnly)
+            if (currentScore > GameConfig.ScoreForSmalUFOsOnly)
             {
                 currentlyUsedUfo = smallUfo;
-
             }
             else
             {
@@ -97,34 +98,34 @@ namespace Game.Ships.Ufo
             currentlyUsedUfo.gameObject.SetActive(true);
         }
 
-        IEnumerator DisableEnemyShipAfterTimer() //isn't this the same as "DisableAfter... CS" class ??? 
+        IEnumerator DisableShipAfterTimer() //isn't this the same as "DisableAfter... CS" class ??? 
         {
             yield return new WaitForSeconds(1.5f);
-            DisableCurrentlyUsedUfo();
+            DisableCurrentlyUsedShip(); //currently USED or ACTIVE ship ? 
         }
 
-        public event Action OnUfoDisabled;
-        private void DisableCurrentlyUsedUfo()
+        public event Action OnShipDisabled;
+        private void DisableCurrentlyUsedShip()
         {
             currentlyUsedUfo.SetActive(false);
-            OnUfoDisabled?.Invoke();
+            OnShipDisabled?.Invoke();
         }
 
-        public bool IsUfoCurrentlyActive()
+        public bool IsAnyUfoActive()
         {
             return currentlyUsedUfo.activeSelf;
         }
 
         private void OnDestroy()
         {
-            ActionListenerUtility.UnsubscribeActionListenersFrom(ref OnUfoDisabled);
+            ActionListenerUtility.UnsubscribeActionListenersFrom(ref OnShipDisabled);
         }
 
         private void OnUfoProjectileDestroyed(object sender, OnProjectileDestroyedArgs args)
         {
             if (args.tagOfObjectHit.Equals(playerShip.gameObject.tag))
             {
-                StartCoroutine(DisableEnemyShipAfterTimer());
+                StartCoroutine(DisableShipAfterTimer());
             }
         }
     }
