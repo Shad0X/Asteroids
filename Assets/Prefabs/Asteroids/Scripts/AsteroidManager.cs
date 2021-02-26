@@ -41,7 +41,6 @@ namespace Game.Asteroids
 
 
 
-
         //Object Pool specific... 
         [SerializeField]
         GameObjectPool asteroidObjectPool; //Shouldn't be here... since it's already used in the AsteroidFactory... 
@@ -119,8 +118,6 @@ namespace Game.Asteroids
             float randomForceY = Random.Range(-1f, 1f);
             rigidbody.AddForce(new Vector2(randomForceX, randomForceY) / rigidbody.gameObject.transform.localScale, ForceMode2D.Impulse);
         }
-
-     
 
         void OnDestroy()
         {
