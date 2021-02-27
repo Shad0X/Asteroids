@@ -75,6 +75,8 @@ namespace Game
         }
 
         IEnumerator showTitleScreenCoroutine;
+        public event Action OnGameOver;
+
         void HandleGameOver()
         {
             canPlayAgain = false;
@@ -92,29 +94,58 @@ namespace Game
             canPlayAgain = true;
         }
 
+
+
+
+
+
+//All 3 pretty much DO THE SAME thing... check if the Round is over.... 
+
         //KINDA Asteroid specific, BUT Affects Game LOGIC... 
         private void OnAsteroidDestroyed(object sender, OnAsteroidDestroyedArgs args)
         {
             if (args.size == GameConfig.SmallAsteroidSize)
             {
-                CheckIfToStartNewRound();
+                StartNewRoundIfPossible();
             }
         }
 
         //same stuff in BOTH methods... why not just call CheckIfToStart..... directly, rather than a method to call it... ? 
         public void OnUfoDestroyedOrDisabled() //not great if PUBLIC, no ... ?  SHOULDN'T allow OTHER Classes to use this as a SUBSCRIBER... 
         {
-            CheckIfToStartNewRound();
+            StartNewRoundIfPossible();
         }
 
         void OnUfoDisabled()
         {
             //send out ACTION to inform other scripts.. ? 
-            CheckIfToStartNewRound(); //GameLogic.CS method.. 
+            StartNewRoundIfPossible(); //GameLogic.CS method.. 
         }
 
-        public event Action OnGameOver;
+        private void StartNewRoundIfPossible() 
+            //name isn't ideal, but better than OLD 1...  
+        {
+            if (IsRoundOver())
+            {
+                StartCoroutine(StartMewRoundAfterDelay());
+                //could be an issue if the Player is blown up AFTER starting CoRoutine ? 
+                    // ex - UFO shoots @ Player, Player blows up UFO > starts counter > UFO Projectile blows up Player... 
+            }
+        }
 
+
+
+
+
+
+
+
+
+
+
+
+        //Could just be a separate Event ? No real need for GameLogic to know the LIFE Count.. just that it's 0... 
+        // we're just kinda reUsing it since we already have it for the LIFE Display.. sort of.. 
         private void OnPlayerLivesChanged(int currentLifeCount) //mainly or ONLY stuff for PlayerManager... not rly relevent to GameLogic BESIDES Player LIFE count... 
         {
             if (currentLifeCount <= 0)
@@ -123,13 +154,7 @@ namespace Game
             }
         }
 
-        private void CheckIfToStartNewRound() //DOES MORE than the name implies... NOT just CHECKING, but also TRIGGERING a NEW ROUND timer... 
-        {
-            if (IsRoundOver())
-            {
-                StartCoroutine(StartMewRoundAfterDelay()); 
-            }
-        }
+
 
         IEnumerator StartMewRoundAfterDelay()
         {
