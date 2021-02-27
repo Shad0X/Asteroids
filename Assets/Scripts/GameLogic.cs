@@ -43,7 +43,6 @@ namespace Game
             playerLives.OnPlayerLivesChanged += OnPlayerLivesChanged;
         }
 
-        float roundStartedAtTime;
         public event Action<float> OnNewGameStarted;
         public event Action<float> OnNewRoundStarted;
         public event Action OnCanPlayAgain;
@@ -73,7 +72,6 @@ namespace Game
             //other
             CurrentGameState = GameState.Playing;
             OnNewGameStarted?.Invoke(Time.time);
-            roundStartedAtTime = Time.time;
         }
 
         IEnumerator showTitleScreenCoroutine;
@@ -143,8 +141,7 @@ namespace Game
         void StartNewRound()
         {
             CurrentGameState = GameState.Playing;
-            roundStartedAtTime = Time.time;
-            OnNewRoundStarted.Invoke(roundStartedAtTime);
+            OnNewRoundStarted.Invoke(Time.time);
         }
 
         private bool IsRoundOver()

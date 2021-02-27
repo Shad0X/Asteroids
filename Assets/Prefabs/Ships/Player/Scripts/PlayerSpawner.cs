@@ -40,7 +40,7 @@ namespace Game.Ships.Player
 
         private void OnNewGame(float timeStartedAt)
         {
-            EnablePlayerAtWorldCenter(); //spaning..
+            EnablePlayerAtWorldCenter(); //spawning..
         }
 
         void EnablePlayerAtWorldCenter() //only PARTIALLY Player specific.. generally very similar to other Methods in Asteroid / Ufo that Place them on Screen @ X, Z.. 

@@ -40,7 +40,6 @@ namespace Game.Asteroids
         }
 
 
-
         //Object Pool specific... 
         [SerializeField]
         GameObjectPool asteroidObjectPool; //Shouldn't be here... since it's already used in the AsteroidFactory... 
