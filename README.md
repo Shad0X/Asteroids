@@ -12,3 +12,5 @@ Keyboard controls:
 No leaderboard functionality or way to store your highscore at the end of the game.
 
 Some potential code improvements have been left out due to the nature of the project and no specific benefits from implementing those.
+
+Gameplay video at https://youtu.be/TooaqIvj2yI
